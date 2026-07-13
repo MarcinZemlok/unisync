@@ -41,8 +41,8 @@ cmd_push() {
 # --- Subcommand Router ---
 case "$1" in
     edit)   ${EDITOR:-nano} "$CONFIG_FILE" ;;
-    list)   # ... list config blocks ... ;;
-    status) # ... check if dest paths exist ... ;;
+    list)   echo "... list config blocks ..." ;;
+    status) echo "... check if dest paths exist ..." ;;
     sync)   cmd_sync ;;
     push)   cmd_push ;;
     "")     cmd_status && echo "---" && cmd_sync ;;
