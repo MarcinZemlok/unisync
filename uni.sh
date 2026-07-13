@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-CONFIG_FILE="$HOME/.stashrc"
+CONFIG_FILE="$HOME/.config/unisync"
 PASSPHRASE_ENV="STASH_PASSPHRASE"
 
 get_password() {
