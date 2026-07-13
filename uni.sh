@@ -1,8 +1,17 @@
 #!/usr/bin/env bash
 set -e
 
-CONFIG_FILE="$HOME/.config/unisync"
-PASSPHRASE_ENV="STASH_PASSPHRASE"
+UNISYNC_DIR="$HOME/.unisync"
+PASSPHRASE_ENV="UNISYNC_PASSPHRASE"
+
+load_config() {
+    CONFIG_FILE="$UNISYNC_DIR/config"
+    if [[ ! -f "$CONFIG_FILE" ]]; then
+        echo "Error: Configuration file not found at $CONFIG_FILE. Please run the install script first."
+        exit 1
+    fi
+    source "$CONFIG_FILE"
+}
 
 get_password() {
     if [ -z "${!PASSPHRASE_ENV}" ]; then

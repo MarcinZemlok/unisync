@@ -67,6 +67,26 @@ clone_repo() {
     echo " [OK]"
 }
 
+update_repo() {
+    echo "Updating the Git repository..."
+    git -C "$UNISYNC_DIR/repo" pull
+    echo " [OK]"
+}
+
+validate_repo() {
+    echo "Validating the structure of the cloned repository..."
+    if [[ ! -d "$UNISYNC_DIR/repo/assets" ]]; then
+        echo "Error: The repository does not contain an 'assets' directory. Please ensure the repository is structured correctly."
+        exit 1
+    fi
+
+    if [[ ! -f "$UNISYNC_DIR/repo/assets_list.txt" ]]; then
+        echo "Error: The repository does not contain an 'assets_list.txt' file. Please ensure the repository is structured correctly."
+        exit 1
+    fi
+    echo " [OK]"
+}
+
 get_unisync() {
     echo -n "Downloading unisync script..."
     wget -qO "$BIN_DIR/uni" "https://raw.githubusercontent.com/MarcinZemlok/unisync/refs/heads/master/uni.sh"
@@ -84,6 +104,8 @@ populate_environment() {
     if [[ ! -d "$UNISYNC_DIR/repo/.git" ]]; then
         clone_repo
     fi
+    update_repo
+    validate_repo
 
     # Check if uni script exists, if not download it
     if [[ ! -f "$BIN_DIR/uni" ]]; then
