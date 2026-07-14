@@ -35,18 +35,14 @@ populate_config() {
     cat << 'EOF' > "$UNISYNC_DIR/config"
 # Example configuration for unisync
 
-[global]
-repo = "git@github.com:username/my-assets.git"
+### General Settings ###
+
 cipher = "aes-256-cbc"
 
-[dotfiles]
-source = "assets/dotfiles.tar.enc"
-dest = "~/.bashrc"
+### Asset Mappings ###
 
-[dev-certs]
-# This entry targets an entire directory tree
-source = "assets/certs.tar.enc"
-dest = "~/development/certs/"
+dotfiles = assets/dotfiles.tar.enc | ~/.bashrc
+dev-certs = assets/certs.tar.enc | ~/development/certs/
 
 EOF
 }
@@ -74,7 +70,7 @@ update_repo() {
 }
 
 validate_repo() {
-    echo "Validating the structure of the cloned repository..."
+    echo -n "Validating the structure of the cloned repository..."
     if [[ ! -d "$UNISYNC_DIR/repo/assets" ]]; then
         echo "Error: The repository does not contain an 'assets' directory. Please ensure the repository is structured correctly."
         exit 1
