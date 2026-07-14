@@ -116,7 +116,7 @@ cmd_push() {
     openssl enc -e -${CIPHER} -pbkdf2 -iter 100000 -in "$temp_archive" -out "$full_source"
 
     # Add asset to the assets_list.txt if not already present
-    if ! grep -q "^\s*${name}\s*=" "$UNISYNC_DIR/repo/assets_list.txt"; then
+    if ! grep -q "^\s*${name}\s*" "$ASSETS_REPO_DIR/assets_list.txt"; then
         echo "$name" >> "$ASSETS_REPO_DIR/assets_list.txt"
     fi
 
@@ -143,7 +143,7 @@ CIPHER=$(grep -E '^\s*cipher\s*=' "$CONFIG_FILE_NAME" | awk -F '=' '{print $2}' 
 
 # --- Subcommand Router ---
 case "$1" in
-    list)   cat "$UNISYNC_DIR/repo/assets_list.txt" ;;
+    list)   cat "$ASSETS_REPO_DIR/assets_list.txt" ;;
     get)    cmd_get $2 ;;
     push)   cmd_push $2 ;;
     edit)   ${EDITOR:-nano} "$CONFIG_FILE_NAME" ;;
