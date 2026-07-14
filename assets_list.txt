@@ -1,1 +1,1 @@
-bashrc = /home/marcinzemlok/.unisync/repo/assets/bashrc.tar.enc | /home/marcinzemlok/.bashrc
+bashrc
