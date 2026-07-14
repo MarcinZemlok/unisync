@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
+BIN_DIR="$HOME/.local/bin"
 UNISYNC_DIR="$HOME/.unisync"
 ASSETS_REPO_DIR="$UNISYNC_DIR/repo"
 ASSETS_DIR="$ASSETS_REPO_DIR/assets"
@@ -129,6 +130,13 @@ cmd_push() {
     echo " [OK]"
 }
 
+cmd_update() {
+    echo -n "Updating unisync script..."
+    wget -qO "$BIN_DIR/uni" "https://raw.githubusercontent.com/MarcinZemlok/unisync/refs/heads/master/uni.sh"
+    chmod +x "$BIN_DIR/uni"
+    echo " [OK]"
+}
+
 # Global configuration variables
 check_config
 CIPHER=$(grep -E '^\s*cipher\s*=' "$CONFIG_FILE_NAME" | awk -F '=' '{print $2}' | xargs)
@@ -139,5 +147,16 @@ case "$1" in
     get)    cmd_get $2 ;;
     push)   cmd_push $2 ;;
     edit)   ${EDITOR:-nano} "$CONFIG_FILE_NAME" ;;
-    *)      echo "Usage: uni [edit|list|status|get|push]"; exit 1 ;;
+    update) cmd_update ;;
+    *)
+        echo -e "\n***** UNISYNC help *****\n"
+        echo "Usage: uni [edit|list|status|get|push]"
+        echo -e "\nCommands:"
+        echo "  edit    - Edit the configuration file"
+        echo "  list    - List all available assets"
+        echo "  get     - Pull, decrypt, and unpack an asset (usage: uni get <asset_name>)"
+        echo "  push    - Pack, encrypt, and push updates to an asset (usage: uni push <asset_name>)"
+        echo "  update  - Update uni.sh script"
+        echo -e "\n*************************\n"
+        exit 1 ;;
 esac
