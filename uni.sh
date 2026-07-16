@@ -27,7 +27,12 @@ get_password() {
 check_asset_name() {
     local asset_name="$1"
     if ! grep -q "^\s*${asset_name}\s*=" "$CONFIG_FILE_NAME"; then
-        echo "Error: Asset '$asset_name' not found in configuration. Please check your config file."
+        echo "Error: Asset '$asset_name' not found in configuration."
+        read -p "Do you want to edit the configuration file? (y/n): " choice
+        if [[ "$choice" == "y" || "$choice" == "Y" ]]; then
+            echo "$asset_name = ${asset_name}.tar.enc | " >> "$CONFIG_FILE_NAME"
+            ${EDITOR:-nano} "$CONFIG_FILE_NAME"
+        fi
         exit 1
     fi
 }
