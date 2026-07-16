@@ -130,8 +130,8 @@ cmd_push() {
     echo " [OK]"
 }
 
-cmd_update() {
-    echo -n "Updating unisync script..."
+cmd_upgrade() {
+    echo -n "Upgrading unisync script..."
     wget -qO "$BIN_DIR/uni" "https://raw.githubusercontent.com/MarcinZemlok/unisync/refs/heads/master/uni.sh"
     chmod +x "$BIN_DIR/uni"
     echo " [OK]"
@@ -147,7 +147,8 @@ case "$1" in
     get)    cmd_get $2 ;;
     push)   cmd_push $2 ;;
     edit)   ${EDITOR:-nano} "$CONFIG_FILE_NAME" ;;
-    update) cmd_update ;;
+    upgrade) cmd_upgrade ;;
+    update)   check_and_update_repo ;;
     *)
         echo -e "\n***** UNISYNC help *****\n"
         echo "Usage: uni [edit|list|status|get|push]"
@@ -156,7 +157,8 @@ case "$1" in
         echo "  list    - List all available assets"
         echo "  get     - Pull, decrypt, and unpack an asset (usage: uni get <asset_name>)"
         echo "  push    - Pack, encrypt, and push updates to an asset (usage: uni push <asset_name>)"
-        echo "  update  - Update uni.sh script"
+        echo "  upgrade - Upgrade uni.sh script"
+        echo "  update  - Update the assets repository"
         echo -e "\n*************************\n"
         exit 1 ;;
 esac
